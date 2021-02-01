@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:my_shop_app/providers/cart.dart';
 import 'package:my_shop_app/providers/products_provider.dart';
+import 'package:my_shop_app/widgets/badge.dart';
 import 'package:my_shop_app/widgets/products_grid.dart';
 import 'package:provider/provider.dart';
 
@@ -40,6 +42,16 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
                     child: Text('Show All'), value: FilterOptions.All),
               ];
             },
+          ),
+          Consumer<Cart>(
+            builder: (_, cartData, child) => Badge(
+              value: cartData.cartCount.toString(),
+              child: child,
+            ),
+            child: IconButton(
+              icon: Icon(Icons.shopping_cart),
+              onPressed: () {},
+            ),
           )
         ],
       ),
