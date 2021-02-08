@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_shop_app/screens/orders_screen.dart';
+import 'package:my_shop_app/screens/user_products_screen.dart';
 
 class AppDrawer extends StatefulWidget {
   @override
@@ -30,6 +31,15 @@ class _AppDrawerState extends State<AppDrawer> {
             title: Text('Pay'),
             onTap: () {
               Navigator.of(context).pushReplacementNamed(OrderScreen.routeName);
+            },
+          ),
+          Divider(),
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('My Products'),
+            onTap: () {
+              Navigator.of(context)
+                  .pushReplacementNamed(UserProductsScreen.routeName);
             },
           ),
         ],
