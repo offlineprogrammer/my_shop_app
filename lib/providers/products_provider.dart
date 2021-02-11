@@ -52,6 +52,32 @@ class ProductsProvider with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == Id);
   }
 
+  Future<void> fetchAnddSetProducts() async {
+    const url =
+        'https://fluttershopapp-7392f-default-rtdb.firebaseio.com/products.json';
+
+    try {
+      final response = await http.get(url);
+      print(json.decode(response.body));
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Product> loadedProducts = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedProducts.add(Product(
+          id: prodId,
+          title: prodData['title'],
+          description: prodData['description'],
+          imageUrl: prodData['imageUrl'],
+          price: prodData['price'],
+          isFavorite: prodData['isFavorite'],
+        ));
+        _items = loadedProducts;
+        notifyListeners();
+      });
+    } catch (error) {
+      throw error;
+    }
+  }
+
   Future<void> addProduct(Product product) async {
     const url =
         'https://fluttershopapp-7392f-default-rtdb.firebaseio.com/products.json';
