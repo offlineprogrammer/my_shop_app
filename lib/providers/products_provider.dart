@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:my_shop_app/models/product.dart';
 import 'package:http/http.dart' as http;
@@ -51,19 +52,18 @@ class ProductsProvider with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == Id);
   }
 
-  Future<void> addProduct(Product product) {
+  Future<void> addProduct(Product product) async {
     const url =
         'https://fluttershopapp-7392f-default-rtdb.firebaseio.com/products.json';
-    return http
-        .post(url,
-            body: json.encode({
-              'title': product.title,
-              'description': product.description,
-              'imageUrl': product.imageUrl,
-              'price': product.price,
-              'isFavorite': product.isFavorite
-            }))
-        .then((response) {
+    try {
+      final response = await http.post(url,
+          body: json.encode({
+            'title': product.title,
+            'description': product.description,
+            'imageUrl': product.imageUrl,
+            'price': product.price,
+            'isFavorite': product.isFavorite
+          }));
       final newProduct = Product(
         description: product.description,
         title: product.title,
@@ -73,9 +73,9 @@ class ProductsProvider with ChangeNotifier {
       );
       _items.add(newProduct);
       notifyListeners();
-    }).catchError((error) {
+    } catch (error) {
       throw error;
-    });
+    }
   }
 
   void editProduct(String id, Product product) {
